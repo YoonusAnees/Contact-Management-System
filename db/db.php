@@ -1,5 +1,4 @@
 <?php
-// config/db.php
 
 declare(strict_types=1);
 
