@@ -160,7 +160,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     });
   </script>
 
-  <!-- Field errors modal -->
   <?php if (!empty($errors)): ?>
     <?php
       $fieldErrors = [];
