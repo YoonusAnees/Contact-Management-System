@@ -137,6 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <div class="actions">
           <button type="submit">Submit</button>
+          <a class="link" href="admin/login.php">Admin Login</a>
         </div>
       </form>
     </section>
@@ -159,7 +160,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     });
   </script>
 
-  <!-- Field errors modal -->
   <?php if (!empty($errors)): ?>
     <?php
       $fieldErrors = [];

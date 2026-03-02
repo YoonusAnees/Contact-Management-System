@@ -152,4 +152,15 @@ button:hover {
     .header h1 {
         font-size: 38px;
     }
+
+
+input, textarea {
+  -webkit-text-fill-color: var(--text); 
+  font-size: 16px; /
+}
+
+
+.card, .form, .field, input, textarea, button, a {
+  pointer-events: auto;
+}
 }
