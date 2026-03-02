@@ -11,29 +11,31 @@ $email = "";
 $phone = "";
 $message = "";
 
+
+$status = $_GET["status"] ?? "";
+if ($status === "success") {
+    $success = "Thanks! Your message has been submitted successfully.";
+}
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // 1) Read + sanitize
+
     $name = clean_string($_POST["name"] ?? "");
     $email = clean_string($_POST["email"] ?? "");
     $phone = clean_string($_POST["phone"] ?? "");
     $message = clean_string($_POST["message"] ?? "");
 
-    // 2) Validate required fields
     if ($name === "") $errors["name"] = "Name is required.";
     if ($email === "") $errors["email"] = "Email is required.";
     if ($message === "") $errors["message"] = "Message is required.";
 
-    // 3) Validate email format
     if ($email !== "" && !is_valid_email($email)) {
         $errors["email"] = "Please enter a valid email address.";
     }
 
-    // 4) Optional: basic length limits (good practice)
     if ($name !== "" && mb_strlen($name) > 120) $errors["name"] = "Name is too long (max 120 chars).";
     if ($email !== "" && mb_strlen($email) > 180) $errors["email"] = "Email is too long (max 180 chars).";
     if ($phone !== "" && mb_strlen($phone) > 40) $errors["phone"] = "Phone is too long (max 40 chars).";
 
-    // 5) Insert if valid
     if (!$errors) {
         try {
             $stmt = $pdo->prepare("
@@ -47,10 +49,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ":message" => $message,
             ]);
 
-            $success = "Thanks! Your message has been submitted successfully.";
+            header("Location: index.php?status=success");
+            exit;
 
-            // Reset form values after success
-            $name = $email = $phone = $message = "";
         } catch (Throwable $e) {
             $errors["general"] = "Something went wrong while saving your message. Please try again.";
         }
@@ -64,7 +65,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Contact Form</title>
   <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
   <main class="container">
     <header class="header">
@@ -72,16 +75,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       <p>Send us a message and we’ll get back to you.</p>
     </header>
 
-    <?php if (!empty($success)): ?>
-      <div class="alert success"><?= e($success) ?></div>
-    <?php endif; ?>
-
-    <?php if (!empty($errors["general"])): ?>
-      <div class="alert error"><?= e($errors["general"]) ?></div>
-    <?php endif; ?>
-
     <section class="card">
-      <form method="POST" action="index.php" class="form" novalidate>
+      <form id="contactForm" method="POST" action="index.php" class="form" novalidate>
         <div class="field">
           <label for="name">Name <span class="req">*</span></label>
           <input
@@ -142,7 +137,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <div class="actions">
           <button type="submit">Submit</button>
-          <a class="link" href="admin.php">View Admin Records</a>
         </div>
       </form>
     </section>
@@ -151,5 +145,74 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       <small>Veloz Marketing – Contact Management System</small>
     </footer>
   </main>
+
+  <script>
+    const form = document.getElementById("contactForm");
+    form.addEventListener("submit", function () {
+      Swal.fire({
+        title: "Submitting...",
+        text: "Please wait a moment",
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => Swal.showLoading()
+      });
+    });
+  </script>
+
+  <!-- Field errors modal -->
+  <?php if (!empty($errors)): ?>
+    <?php
+      $fieldErrors = [];
+      foreach ($errors as $k => $msg) {
+        if ($k !== "general") $fieldErrors[] = $msg;
+      }
+    ?>
+    <?php if (!empty($fieldErrors)): ?>
+      <script>
+        Swal.fire({
+          icon: "error",
+          title: "Please Fill The Required Fields",
+          html: `
+            <div style="text-align:left">
+              <ul style="margin:0; padding-left:18px;">
+                <?php foreach ($fieldErrors as $msg): ?>
+                  <li><?= e($msg) ?></li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
+          `,
+          confirmButtonColor: "#ff5a5f"
+        });
+      </script>
+    <?php endif; ?>
+  <?php endif; ?>
+
+  <!-- General DB error modal -->
+  <?php if (!empty($errors["general"])): ?>
+    <script>
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "<?= e($errors["general"]) ?>",
+        confirmButtonColor: "#ff5a5f"
+      });
+    </script>
+  <?php endif; ?>
+
+  <?php if (!empty($success)): ?>
+    <script>
+      Swal.fire({
+        icon: "success",
+        title: "Submitted!",
+        text: "<?= e($success) ?>",
+        confirmButtonColor: "#4c7dff"
+      }).then(() => {
+        const url = new URL(window.location);
+        url.searchParams.delete("status");
+        window.history.replaceState({}, "", url);
+      });
+    </script>
+  <?php endif; ?>
+
 </body>
 </html>
