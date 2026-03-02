@@ -1,16 +1,12 @@
 # 📌 Veloz Marketing -- PHP Contact Management System
 
-## 👨‍💻 Developer
-
-Junior Web Developer Technical Task\
 Built using **PHP, MySQL, HTML, CSS, JavaScript, SweetAlert2**
 
 ------------------------------------------------------------------------
 
 # 📖 Project Overview
 
-This is a simple Contact Management System developed as part of the
-Veloz Marketing technical assessment.
+This is a simple Contact Management System developed 
 
 The system allows users to:
 
@@ -158,18 +154,6 @@ http://localhost/your-project-folder/admin/dashboard.php
 -   Dashboard statistics
 -   Clean project structure
 -   Reusable validation functions
-
-------------------------------------------------------------------------
-
-# ✅ Testing Checklist
-
-✔ Submit empty form → Validation errors appear\
-✔ Submit invalid email → Error shown\
-✔ Submit valid form → Success popup appears\
-✔ Refresh page → No duplicate submission\
-✔ Admin login required\
-✔ Dashboard statistics display correctly\
-✔ Inquiries table loads correctly
 
 ------------------------------------------------------------------------
 
