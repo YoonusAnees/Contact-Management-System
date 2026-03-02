@@ -27,6 +27,8 @@ $uniqueEmails = (int)$pdo->query("
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Admin Dashboard</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
+
   <link rel="stylesheet" href="../assets/css/style.css"/>
   <style>
     .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;}

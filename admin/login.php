@@ -53,6 +53,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Admin Login</title>
   <link rel="stylesheet" href="../assets/css/style.css"/>
+    <link rel="icon" type="image/png" href="assets/logo.png">
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
