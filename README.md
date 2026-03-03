@@ -25,7 +25,12 @@ The system follows secure coding practices including:
 -   POST → Redirect → GET pattern (prevents form resubmission)
 
 ------------------------------------------------------------------------
+#  Cradential for Admin
 
+username : yoonusanees2002@gmail.com
+password: yoonus123
+
+------------------------------------------------------------------------
 # ⚙️ Technologies Used
 
 -   PHP 8+
